@@ -22,6 +22,8 @@ fail_list = []
 #AP_pass_count = 0
 e_log = open("ErrorLog.txt","w")
 e_log.write("Starting Error Logging...\n")
+c_log = open("ConsoleLog.txt","w")
+c_log.write("Starting Console Output Log...\n")
 
 ### Functions
 
@@ -62,14 +64,18 @@ def AP_info_setter(user_name, pass_word, host, link):
     print(stdin)
     print(stdout)
     print(stderr)
+    c_log.write(str(stdout) +'\n'+ str(stderr) + '\n')
     for line in stdout:
         print(line)
+        c_log.write(str(line) + "\n")
     ## Closes the  SSH Sesh and prints the std terminal
     ssh.close()
     print(stdin)
     print(stdout)
     print(stderr)
-
+    c_log.write(str(stderr) +'\n'+ str(stderr) + '\n')
+    c_log.write(str(ip_string))
+    
     # Need to lint the 'lines' variable to see if it says failure' 
 
 ##  Runs when any step fails and will output the failure to a log file in the PWD
@@ -119,7 +125,7 @@ def main():
         if pinger(list_to_str(ip_address)):
             print("Pass")
             ## The following method fails to a hard exit, need to add error exceptions if the command fails and to log the IP missed
-            #Try this 
+            #Try this
             try:
                 AP_info_setter(username, password, list_to_str(ip_address), unifi_link) 
                 pass_list.append(list_to_str(ip_address))
