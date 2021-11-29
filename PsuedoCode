@@ -1,0 +1,54 @@
+//Declarations
+String Network_Subnet
+Int good
+int bad
+//Modules
+SSH https://stackoverflow.com/questions/373639/running-interactive-commands-in-paramiko
+
+
+//Logic
+
+*input Network subnet
+*input unify_link
+*input admin
+*input password
+
+*New Ipaddress AP(Network_Subnet) 
+*ap.setD(2)
+for ap.getD = 2 to 254
+    ping ap.getIP
+    if ping success
+        ssh admin@ap.getIP
+            send password 
+            send unify command "unify_link"
+            send exit
+        good++
+    else
+        bad ++
+        output to log failed ap.getIP
+    next ap.getD++
+
+Print Number of good and fails
+
+    
+        
+
+
+
+
+
+
+
+//Objects
+private void Ipaddress(String ip_in)
+    //Declarations
+    int a, b, c, d
+    break up the ip at '.' delimiter
+        a.b.c.d
+    //Logic
+    ip.getA,b,c,d
+    ip.seta,b,c,d
+    ip.getIP
+
+
+        
