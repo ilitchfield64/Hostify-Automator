@@ -51,6 +51,7 @@ def pinger(host):
 ## This executes an SSH Sesh and runs a remote command MAY NEED TO ADD EXCEPTIONS TO THIS METHOD NEEDS TESTING
 def AP_info_setter(user_name, pass_word, host, link):
    ## Creates the SSH Session
+    c_log.write("Opening SSH on " + str(host))
     port = 22
     command = "mca-cli-op set-inform " + str(link) # This '/inform/ might not be needed if the link has it already
     #command = 'help'
@@ -119,7 +120,7 @@ def main():
 
     ## The code will run from address in range x thru 254
     try:
-        for ip_address[3] in range(98, 255):
+        for ip_address[3] in range(164, 200):
             ip_string = list_to_str(ip_address)
         
             ## Tries to ping a remote host, and then attempts to open an SSH Session one success
@@ -137,14 +138,16 @@ def main():
                 except EOFError as e:
                     print(e)
                     failure(list_to_str(ip_address))
-                    failure(e)
+                    
                 
                 except paramiko.ssh_exception.AuthenticationException as e:
                     
                     print(e)
                     failure(list_to_str(ip_address))
                 
-                    
+                except paramiko.ssh_exception.NoValidConnectionsError as e:
+                    print(e)
+                    failure(list_to_str(ip_address)) 
                 
 
             else:
