@@ -118,44 +118,49 @@ def main():
 ### Primary loop
 
     ## The code will run from address in range x thru 254
-    for ip_address[3] in range(98, 255):
-        ip_string = list_to_str(ip_address)
-    
-        ## Tries to ping a remote host, and then attempts to open an SSH Session one success
-        if pinger(list_to_str(ip_address)):
-            print("Pass")
-            ## The following method fails to a hard exit, need to add error exceptions if the command fails and to log the IP missed
-            #Try this
-            try:
-                AP_info_setter(username, password, list_to_str(ip_address), unifi_link) 
-                pass_list.append(list_to_str(ip_address))
-                ## Increment the counter up for passes
-                #global AP_pass_count += 1
-            
-                # On try fail run failure() method. THE ERROR EXCEPTION FOR FAILING AN SSH SESSION MAY NEED TO BE IN THE AP_info_setter() METHOD
-            except EOFError as e:
-                print(e)
-                failure(list_to_str(ip_address))
-                failure(e)
-            
-            except paramiko.ssh_exception.AuthenticationException as e:
-                
-                print(e)
-                failure(list_to_str(ip_address))
-            
-                
-            
-
-        else:
-            failure(list_to_str(ip_address))
+    try:
+        for ip_address[3] in range(98, 255):
+            ip_string = list_to_str(ip_address)
         
-        
+            ## Tries to ping a remote host, and then attempts to open an SSH Session one success
+            if pinger(list_to_str(ip_address)):
+                print("Pass")
+                ## The following method fails to a hard exit, need to add error exceptions if the command fails and to log the IP missed
+                #Try this
+                try:
+                    AP_info_setter(username, password, list_to_str(ip_address), unifi_link) 
+                    pass_list.append(list_to_str(ip_address))
+                    ## Increment the counter up for passes
+                    #global AP_pass_count += 1
+                
+                    # On try fail run failure() method. THE ERROR EXCEPTION FOR FAILING AN SSH SESSION MAY NEED TO BE IN THE AP_info_setter() METHOD
+                except EOFError as e:
+                    print(e)
+                    failure(list_to_str(ip_address))
+                    failure(e)
+                
+                except paramiko.ssh_exception.AuthenticationException as e:
+                    
+                    print(e)
+                    failure(list_to_str(ip_address))
+                
+                    
+                
 
+            else:
+                failure(list_to_str(ip_address))
+            
+    except KeyboardInterrupt as e:
+        print("Intrrupted by User")
+        e_log.write("Interupted by user\n" +str(e))
+        c_log.write("Interupted by User\n")
+
+        
     ## Shows the number of APs completed 
     #print("The numeber of APs passed is: " + AP_pass_count)
     print("Check Log file for any errors")
     e_log.close()
-
+    c_log.close()
 
 main()
 
