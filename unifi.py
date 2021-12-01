@@ -172,3 +172,6 @@ main()
 
 
 
+# There is a difference in how the windows version of ping handles the error of a failed ping vs *nix 
+# All pings are counting in windows as a "Success" in my code, but an error exception in the SSH attempt 
+# Keeps the code moving. Will need to update accordingly... or implement a way to read and use a CSV
