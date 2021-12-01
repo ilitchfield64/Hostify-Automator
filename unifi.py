@@ -120,7 +120,7 @@ def main():
 
     ## The code will run from address in range x thru 254
     try:
-        for ip_address[3] in range(164, 200):
+        for ip_address[3] in range(100, 254):
             ip_string = list_to_str(ip_address)
         
             ## Tries to ping a remote host, and then attempts to open an SSH Session one success
@@ -148,7 +148,10 @@ def main():
                 except paramiko.ssh_exception.NoValidConnectionsError as e:
                     print(e)
                     failure(list_to_str(ip_address)) 
-                
+                except TimeoutError as e:
+                    print(e)
+                    failure(list_to_str(ip_address))
+
 
             else:
                 failure(list_to_str(ip_address))
