@@ -35,12 +35,21 @@ def list_to_str(list1):
 ## Pings the remote host to determine if the AP is up
 def pinger(host):
 
-    # return True # this is for debugging REMOVE ME
-    parameter = '-n' if platform.system().lower()=='windows' else '-c'
+    ####### DEBUG RETURN ########### REMOVE IN FINAL ########
 
+    return True
+
+    ###### DEBUG RETURN ############ REMOVE IN FINAL ########
+    
+    
+    # return True # this is for debugging REMOVE ME
+    
+    parameter = '-n' if platform.system().lower()=='windows' else '-c'
+    ## Runs the ping Command with 1 ping per host
     command = ['ping', parameter, '1', host]
     response = subprocess.call(command)
-
+    print(response)
+    ## If returns a 0 it works for linux and and response.split added for windws PCs 
     if response == 0:
         print("Ping!")
         return True
@@ -122,7 +131,7 @@ def main():
     try:
         for ip_address[3] in range(100, 254):
             ip_string = list_to_str(ip_address)
-        
+            print(list_to_str(ip_address))
             ## Tries to ping a remote host, and then attempts to open an SSH Session one success
             if pinger(list_to_str(ip_address)):
                 print("Pass")
