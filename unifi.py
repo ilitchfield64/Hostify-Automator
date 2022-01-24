@@ -101,22 +101,24 @@ def failure(ip_address):
 def main(username,password):
 
 
-## Input data for script ### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ###  
+### Input data for script 
     print()
     print()
-    ip_string = input("Enter the Network Subnet for the Unifi Network: ")
-    host = input("Enter the Stating host of the subnet: ")
+### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ###
+    ip_string = input("Enter the Network Subnet for the Unifi Network: ")           #### COMMENT OUT THE 'INPUT' PART OF THE LINE AND SET THE STATIC SUBNET
+  
+    host = input("Enter the Stating host of the subnet: ")                          #### COMMENT OUT THE 'INPUT' PART OF THE LINE AND SET THE STATIC STARTING HOST
     
-    username = username     # "ubnt"       #= input("Enter the Unifi Account: ")   #### UNCOMMENT AND CHANGE TO EQUAL TO INPUT TO SET 
-    password = password     # "ubnt"       #= input("Enter the Unifi Pasword: ")   #### 
+    username = username     # "ubnt"       #= input("Enter the Unifi Account: ")    #### UNCOMMENT AND CHANGE TO EQUAL TO INPUT TO SET AT RUNTIME
+    password = password     # "ubnt"       #= input("Enter the Unifi Pasword: ")    #### UNCOMMENT AND CHANGE TO EQUAL TO INPUT TO SET AT RUNTIME
 
-   ## unifi_link = input("Enter the Unifi Cloud Link: ")
+    ##unifi_link = input("Enter the Unifi Cloud Link: ")                            #### UNCOMENT TO SET THE INFORM LINK AT RUNTIME
+### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ###  
 
-## Takes IP and breaks it up into a list
-    ip_address = ip_string.split('.')  ### DO NOT CHANGE
-    ip_address[3] = int(ip_address[3]) ### DO NOT CHANGE
-    ip_address[3] = int(host) 
-### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ###    
+### Takes IP and breaks it up into a list
+    ip_address = ip_string.split('.')                                               
+    ip_address[3] = int(ip_address[3])                                              
+    ip_address[3] = int(host)                                                       
     ip_string = list_to_str(ip_address)
 
 
