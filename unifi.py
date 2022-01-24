@@ -3,6 +3,8 @@
 ## Use with caution on New Unifi devices only
 ## IN theory it should only affect the Unifi devices, however a firewall
 ## may block traffic due to excesive pings
+## Anything in between the '### ~~~~~ ###' are meant to be user editable variables to adjust the script to your needs
+
 
 
 ### Imports
@@ -13,10 +15,17 @@ import subprocess
 import paramiko
 
 ### Declartaions
-ip_string = 0
+
+## CHANGE THIS TO SET THE UNIFY LINK ### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #####
+
+unifi_link = 'http://unifi.tech-keys.com:8080/inform'
+
 username = "ubnt"
 password = "ubnt"
-unifi_link = 'http://unifi.tech-keys.com:8080/inform'
+
+#### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #####
+
+ip_string = 0
 pass_list = []
 fail_list = []
 #AP_pass_count = 0
@@ -86,25 +95,32 @@ def failure(ip_address):
     #print(fail_list)
     e_log.write(ip_address + ": Failed\n")
 
-############~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##########
+#==================================================================================================================================#
 
 ### Main Loop 
 def main():
 
 
-## Input data for script   
+## Input data for script ### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ###  
     print()
     print()
     ip_string = input("Enter the Network Subnet for the Unifi Network: ")
-    user = "ubnt"
-    password = "ubnt"
+    host = input("Enter the Stating host of the subnet: ")
+    
+    user = "ubnt"       #= input("Enter the Unifi Account: ")   #### UNCOMMENT AND CHANGE TO EQUAL TO INPUT TO SET 
+    password = "ubnt"   #= input("Enter the Unifi Pasword: ")   #### 
+
    ## unifi_link = input("Enter the Unifi Cloud Link: ")
 
 ## Takes IP and breaks it up into a list
-    ip_address = ip_string.split('.')
-    ip_address[3] = int(ip_address[3])
-    ip_address[3] = 98
+    ip_address = ip_string.split('.')  ### DO NOT CHANGE
+    ip_address[3] = int(ip_address[3]) ### DO NOT CHANGE
+    ip_address[3] = int(host) 
+### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ###    
     ip_string = list_to_str(ip_address)
+
+
+
 
 
 # Some debug code for testing
