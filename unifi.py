@@ -141,10 +141,10 @@ def main(username,password):
         for ip_address[3] in range(100, 255):
             ip_string = list_to_str(ip_address)
         
-            ## Tries to ping a remote host, and then attempts to open an SSH Session one success
+            ## Tries to ping a remote host, and then attempts to open an SSH Session on success
             if pinger(list_to_str(ip_address)):
                 print("Pass")
-                ## The following method fails to a hard exit, need to add error exceptions if the command fails and to log the IP missed
+                ## Ignore this comment Fixing issues                                                               ## The following method fails to a hard exit, need to add error exceptions if the command fails and to log the IP missed
                 #Try this
                 try:
                     AP_info_setter(username, password, list_to_str(ip_address), unifi_link) 
@@ -158,12 +158,12 @@ def main(username,password):
                     failure(list_to_str(ip_address))
                     
                 
-                except paramiko.ssh_exception.AuthenticationException as e:
+                except paramiko.ssh_exception.AuthenticationException as e:  ## This excepts the Autentication error from SSH upon failed login
                     
                     print(e)
                     failure(list_to_str(ip_address))
                 
-                except paramiko.ssh_exception.NoValidConnectionsError as e:
+                except paramiko.ssh_exception.NoValidConnectionsError as e:  ## This excepts a general failure in SSH ie: falied to connect to IP
                     print(e)
                     failure(list_to_str(ip_address)) 
                 except TimeoutError as e:
