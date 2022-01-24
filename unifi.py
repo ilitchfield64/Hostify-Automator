@@ -98,7 +98,7 @@ def failure(ip_address):
 #==================================================================================================================================#
 
 ### Main Loop 
-def main():
+def main(username,password):
 
 
 ## Input data for script ### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ###  
@@ -107,8 +107,8 @@ def main():
     ip_string = input("Enter the Network Subnet for the Unifi Network: ")
     host = input("Enter the Stating host of the subnet: ")
     
-    user = "ubnt"       #= input("Enter the Unifi Account: ")   #### UNCOMMENT AND CHANGE TO EQUAL TO INPUT TO SET 
-    password = "ubnt"   #= input("Enter the Unifi Pasword: ")   #### 
+    username = username     # "ubnt"       #= input("Enter the Unifi Account: ")   #### UNCOMMENT AND CHANGE TO EQUAL TO INPUT TO SET 
+    password = password     # "ubnt"       #= input("Enter the Unifi Pasword: ")   #### 
 
    ## unifi_link = input("Enter the Unifi Cloud Link: ")
 
@@ -136,7 +136,7 @@ def main():
 
     ## The code will run from address in range x thru 254
     try:
-        for ip_address[3] in range(100, 254):
+        for ip_address[3] in range(100, 255):
             ip_string = list_to_str(ip_address)
         
             ## Tries to ping a remote host, and then attempts to open an SSH Session one success
