@@ -183,10 +183,11 @@ def main(username,password):
     ## Shows the number of APs completed 
     #print("The numeber of APs passed is: " + AP_pass_count)
     print("Check Log file for any errors")
+
     e_log.close()
     c_log.close()
 
-main()
+main(username,password)
 
 
 
