@@ -35,7 +35,7 @@ fail_list = []
 #AP_pass_count = 0
 
 
-ip_log = open("ip_log.txt", "w")
+
 
 
 
@@ -61,9 +61,12 @@ def pinger(host):
     command = ['ping', parameter, '1', host]
     response = subprocess.call(command)
 
+    
+
     if response == 0:
         print("Ping!")
-
+        f.write(str(host))
+        f.write('\n')
         return True
     else:
         print("Failed to Ping")
@@ -119,7 +122,7 @@ def default(username,password):
 ### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ###
     ip_string = input("Enter the Network Subnet for the Unifi Network: ")           #### COMMENT OUT THE 'INPUT' PART OF THE LINE AND SET THE STATIC SUBNET
   
-    host = input("Enter the Stating host of the subnet: ")                          #### COMMENT OUT THE 'INPUT' PART OF THE LINE AND SET THE STATIC STARTING HOST
+    starting = input("Enter the Stating host of the subnet: ")                          #### COMMENT OUT THE 'INPUT' PART OF THE LINE AND SET THE STATIC STARTING HOST
     
     username = username     # "ubnt"       #= input("Enter the Unifi Account: ")    #### UNCOMMENT AND CHANGE TO EQUAL TO INPUT TO SET AT RUNTIME
     password = password     # "ubnt"       #= input("Enter the Unifi Pasword: ")    #### UNCOMMENT AND CHANGE TO EQUAL TO INPUT TO SET AT RUNTIME
@@ -130,7 +133,7 @@ def default(username,password):
 ### Takes IP and breaks it up into a list
     ip_address = ip_string.split('.')                                               
     ip_address[3] = int(ip_address[3])                                              
-    ip_address[3] = int(host)                                                       
+    ip_address[3] = int(starting)                                                       
     ip_string = list_to_str(ip_address)
 
 
@@ -148,40 +151,18 @@ def default(username,password):
 
 ### Primary loop
 
-    ## The code will run from address in range x thru 254
+    ## The code will run from address in range x thru 254 and put it in a list
+    f = open('ip_log.csv','w')
+    
     try:
-        for ip_address[3] in range(100, 255):
+        for ip_address[3] in range(int(starting), 122):
             ip_string = list_to_str(ip_address)
         
             ## Tries to ping a remote host, and then attempts to open an SSH Session on success
             if pinger(list_to_str(ip_address)):
                 print("Pass")
                 ## Ignore this comment Fixing issues                                                               ## The following method fails to a hard exit, need to add error exceptions if the command fails and to log the IP missed
-                #Try this
-                try:
-                    AP_info_setter(username, password, list_to_str(ip_address), unifi_link) 
-                    pass_list.append(list_to_str(ip_address))
-                    ## Increment the counter up for passes
-                    #global AP_pass_count += 1
-                
-                    # On try fail run failure() method. THE ERROR EXCEPTION FOR FAILING AN SSH SESSION MAY NEED TO BE IN THE AP_info_setter() METHOD
-                except EOFError as e:
-                    print(e)
-                    failure(list_to_str(ip_address))
-                    
-                
-                except paramiko.ssh_exception.AuthenticationException as e:  ## This excepts the Autentication error from SSH upon failed login
-                    
-                    print(e)
-                    failure(list_to_str(ip_address))
-                
-                except paramiko.ssh_exception.NoValidConnectionsError as e:  ## This excepts a general failure in SSH ie: falied to connect to IP
-                    print(e)
-                    failure(list_to_str(ip_address)) 
-                except TimeoutError as e:
-                    print(e)
-                    failure(list_to_str(ip_address))
-
+                #Try this               
 
             else:
                 failure(list_to_str(ip_address))
@@ -190,23 +171,62 @@ def default(username,password):
         print("Intrrupted by User")
         e_log.write("Interupted by user\n" +str(e))
         c_log.write("Interupted by User\n")
+    f.close()
 
+def runner():
+    #This will try to ssh to each entry in the log file
+    f2 = open('ip_log.csv', 'r')
+    print("ip_loop")
+    
+    ip_list = f2.readlines()
+    for i in ip_list:
+        print(i)
+        
+        try:
+
+            print('Try')
+            AP_info_setter(username, password, i, unifi_link) 
+            pass_list.append((i))
+            ## Increment the counter up for passes
+            #global AP_pass_count += 1
+                
+            # On try fail run failure() method. THE ERROR EXCEPTION FOR FAILING AN SSH SESSION MAY NEED TO BE IN THE AP_info_setter() METHOD
+        except KeyboardInterrupt as e:
+            print("ekb")
+            print("Intrrupted by User")
+            e_log.write("Interupted by user\n" +str(e))
+            c_log.write("Interupted by User\n")
+        except EOFError as e:
+            print("eeof")
+            print(e)
+            failure(list_to_str(i))
+                    
+                
+        except paramiko.ssh_exception.AuthenticationException as e:  ## This excepts the Autentication error from SSH upon failed login
+                   
+            print(e)
+            failure(list_to_str(i))
+                
+        except paramiko.ssh_exception.NoValidConnectionsError as e:  ## This excepts a general failure in SSH ie: falied to connect to IP
+            print(e)
+            failure(list_to_str(i)) 
+        except TimeoutError as e:
+            print(e)
+            failure(list_to_str(i))
         
     ## Shows the number of APs completed 
     #print("The numeber of APs passed is: " + AP_pass_count)
     print("Check Log file for any errors")
     e_log.close()
     c_log.close()
+    f2.close()
 
-def read_csv(file_name):
 
-    pass
-    
 
 
 
 default(username,password)
-
+runner()
 
 
 # There is a difference in how the windows version of ping handles the error of a failed ping vs *nix 
